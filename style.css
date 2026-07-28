@@ -66,6 +66,15 @@
   --code-inline-bg: #f0edee;
   --code-inline-text: #ff3d8b;
 
+  /* Code Syntax Highlighting (Prism Override) */
+  --token-comment: #76777d;
+  --token-punctuation: #45464d;
+  --token-keyword: #a626a4;
+  --token-string: #2e7d32;
+  --token-function: #4078f2;
+  --token-operator: #e45649;
+  --token-number: #b75501;
+
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.05);
   --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.08);
@@ -101,6 +110,15 @@
   --code-bg: #242426;
   --code-inline-bg: #1b1b1c;
   --code-inline-text: #ff3d8b;
+
+  /* Code Syntax Highlighting (Prism Override) */
+  --token-comment: #999999;
+  --token-punctuation: #cccccc;
+  --token-keyword: #cc99cd;
+  --token-string: #7ec699;
+  --token-function: #f08d49;
+  --token-operator: #67cdcc;
+  --token-number: #f8c555;
 
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
@@ -941,6 +959,60 @@ body {
 /* Prism Overrides */
 .markdown-body pre[class*="language-"] {
   background: var(--code-bg) !important;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: var(--token-comment) !important;
+  font-style: italic;
+}
+.token.punctuation {
+  color: var(--token-punctuation) !important;
+}
+.token.namespace {
+  opacity: 0.7;
+}
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: var(--token-number) !important;
+}
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: var(--token-string) !important;
+}
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: var(--token-operator) !important;
+  background: transparent !important;
+}
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: var(--token-keyword) !important;
+  font-weight: 600;
+}
+.token.function,
+.token.class-name {
+  color: var(--token-function) !important;
+}
+.token.regex,
+.token.important,
+.token.variable {
+  color: var(--token-operator) !important;
 }
 
 /* Code block header custom styling */
