@@ -565,6 +565,9 @@ document.addEventListener('DOMContentLoaded', () => {
                   color: ${textColor};
                   font-size: 14px;
                 }
+                body, h1, h2, h3, h4, h5, h6, p, li, span, label, div, legend, th, td, caption, label, section, article {
+                  color: ${textColor};
+                }
                 table {
                   width: 100%;
                   border-collapse: collapse;
@@ -588,7 +591,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   border-radius: 6px;
                   border: 1px solid ${borderColor};
                   background-color: ${previewTheme === 'dark' ? '#242426' : '#ffffff'};
-                  color: inherit;
+                  color: ${textColor};
                   outline: none;
                 }
                 button {
@@ -638,6 +641,9 @@ document.addEventListener('DOMContentLoaded', () => {
                   html.offsetHeight
                 );
                 iframe.style.height = `${height + 20}px`;
+                
+                // Smooth scroll into view so user knows it loaded
+                previewContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
               }, 100);
             };
           }
