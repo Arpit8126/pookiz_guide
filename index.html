@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pookiz Learning Hub</title>
+  <meta name="description" content="An interactive, premium documentation and chapter reader for the Pookiz project learning modules.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- PrismJS for Syntax Highlighting -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" id="prism-theme" />
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Reading Progress Bar -->
+  <div id="reading-progress-container">
+    <div id="reading-progress-bar"></div>
+  </div>
+
+  <!-- Header -->
+  <header id="main-header">
+    <div class="header-left">
+      <button id="mobile-menu-toggle" aria-label="Toggle Menu">
+        <i data-lucide="menu"></i>
+      </button>
+      <div class="logo-area">
+        <div class="logo-icon">P</div>
+        <span class="logo-text">Pookiz<span>Hub</span></span>
+      </div>
+    </div>
+    
+    <div class="header-center">
+      <div class="global-search-container">
+        <i data-lucide="search" class="search-icon"></i>
+        <input type="text" id="global-search" placeholder="Search across all modules...">
+        <button id="clear-search-btn" class="clear-btn" aria-label="Clear Search" style="display: none;">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <div class="text-size-control">
+        <button class="size-btn" id="size-dec-btn" title="Decrease font size" aria-label="Decrease font size">A-</button>
+        <span id="current-size-label">100%</span>
+        <button class="size-btn" id="size-inc-btn" title="Increase font size" aria-label="Increase font size">A+</button>
+      </div>
+      <button id="theme-toggle" class="icon-btn" title="Toggle Theme" aria-label="Toggle Theme">
+        <i data-lucide="sun" class="sun-icon"></i>
+        <i data-lucide="moon" class="moon-icon"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main id="app-container">
+    <!-- Sidebar 1: Categories -->
+    <aside id="category-sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <h2>Categories</h2>
+      </div>
+      <nav class="sidebar-nav" id="category-list">
+        <!-- Dynamically populated -->
+      </nav>
+      <div class="sidebar-footer">
+        <button id="toggle-category-btn" class="sidebar-collapse-btn" title="Collapse categories">
+          <i data-lucide="chevron-left"></i>
+          <span>Collapse</span>
+        </button>
+      </div>
+      <div class="sidebar-resizer" id="category-resizer"></div>
+    </aside>
+
+    <!-- Sidebar 2: Chapters -->
+    <aside id="chapters-sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="chapters-header-title">
+          <h2 id="active-category-name">Chapters</h2>
+          <span id="chapters-count-badge" class="count-badge">0</span>
+        </div>
+        <div class="chapter-search-box">
+          <i data-lucide="search" class="search-small-icon"></i>
+          <input type="text" id="chapter-search" placeholder="Filter chapters...">
+        </div>
+      </div>
+      <nav class="sidebar-nav" id="chapters-list">
+        <!-- Dynamically populated -->
+      </nav>
+      <div class="sidebar-footer">
+        <button id="toggle-chapters-btn" class="sidebar-collapse-btn" title="Collapse chapters">
+          <i data-lucide="chevron-left"></i>
+          <span>Collapse Chapters</span>
+        </button>
+      </div>
+      <div class="sidebar-resizer" id="chapters-resizer"></div>
+    </aside>
+
+    <!-- Content Panel Container -->
+    <section id="content-panel">
+      <!-- Collapse indicators overlay for easy expand -->
+      <div id="restore-panels-bar">
+        <button id="restore-category-btn" class="restore-btn" title="Show categories" style="display: none;">
+          <i data-lucide="folder-open"></i>
+        </button>
+        <button id="restore-chapters-btn" class="restore-btn" title="Show chapters" style="display: none;">
+          <i data-lucide="list"></i>
+        </button>
+      </div>
+
+      <!-- Main Content View -->
+      <article id="content-area" class="content-container">
+        <!-- Welcome Dashboard (Visible initially) -->
+        <div id="welcome-dashboard">
+          <div class="welcome-card">
+            <h1>Welcome to Pookiz Learning Hub</h1>
+            <p class="welcome-subtitle">A centralized repository of project schemas, tech specs, Q&As, and architecture guidelines.</p>
+            
+            <div class="stats-grid">
+              <div class="stat-item">
+                <div class="stat-icon category-color"><i data-lucide="folder"></i></div>
+                <div class="stat-info">
+                  <span class="stat-value" id="stat-categories-count">0</span>
+                  <span class="stat-label">Categories</span>
+                </div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-icon chapter-color"><i data-lucide="book-open"></i></div>
+                <div class="stat-info">
+                  <span class="stat-value" id="stat-chapters-count">0</span>
+                  <span class="stat-label">Chapters</span>
+                </div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-icon size-color"><i data-lucide="database"></i></div>
+                <div class="stat-info">
+                  <span class="stat-value" id="stat-files-size">--</span>
+                  <span class="stat-label">Database Status</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="quick-start-section">
+              <h3>Quick Start</h3>
+              <p>Select a category from the left sidebar, choose a chapter from the secondary list, and start reading.</p>
+              <div class="quick-category-pills" id="quick-category-pills">
+                <!-- Dynamically populated categories -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Markdown Output Container (Hidden by default, shown when chapter selected) -->
+        <div id="markdown-viewer" style="display: none;">
+          <div class="content-header">
+            <div class="breadcrumbs">
+              <span id="breadcrumb-category">Category</span>
+              <span class="breadcrumb-separator">/</span>
+              <span id="breadcrumb-chapter">Chapter Name</span>
+            </div>
+          </div>
+          
+          <!-- This is where parsed HTML goes -->
+          <div id="markdown-body" class="markdown-body"></div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <!-- Mobile Menu Drawer Overlay -->
+  <div id="mobile-overlay" class="drawer-overlay"></div>
+  
+  <!-- Mobile Drawer -->
+  <div id="mobile-drawer" class="drawer">
+    <div class="drawer-header">
+      <div class="drawer-logo">
+        <div class="logo-icon">P</div>
+        <span class="logo-text">Pookiz<span>Hub</span></span>
+      </div>
+      <button id="mobile-drawer-close" aria-label="Close Drawer">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+    
+    <div class="drawer-tabs">
+      <button class="drawer-tab active" id="tab-categories">Categories</button>
+      <button class="drawer-tab" id="tab-chapters" disabled>Chapters</button>
+    </div>
+    
+    <div class="drawer-body">
+      <!-- Categories Screen -->
+      <div id="drawer-categories-view" class="drawer-view active">
+        <div class="drawer-list" id="mobile-category-list">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+      
+      <!-- Chapters Screen -->
+      <div id="drawer-chapters-view" class="drawer-view">
+        <div class="drawer-sub-header">
+          <button id="mobile-back-to-categories" class="back-btn">
+            <i data-lucide="arrow-left"></i>
+            <span id="mobile-category-title-back">Categories</span>
+          </button>
+        </div>
+        <div class="chapter-search-box search-mobile">
+          <i data-lucide="search" class="search-small-icon"></i>
+          <input type="text" id="mobile-chapter-search" placeholder="Filter chapters...">
+        </div>
+        <div class="drawer-list" id="mobile-chapters-list">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll to Top Button -->
+  <button id="scroll-to-top" class="icon-btn scroll-btn" title="Scroll to Top">
+    <i data-lucide="arrow-up"></i>
+  </button>
+
+  <!-- Data Script -->
+  <script src="data.js"></script>
+  
+  <!-- Third-party libraries (Marked.js, Prism.js, Lucide Icons) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+  <!-- Load syntax autoloader to dynamically support typescript, sql, shell, json -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Application JS -->
+  <script src="app.js"></script>
+</body>
+</html>
