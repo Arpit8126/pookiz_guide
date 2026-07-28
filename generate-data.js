@@ -50,8 +50,8 @@ function generateData() {
   });
 
   // Sort categories to maintain a consistent order
-  // e.g. frontend, backend, database, project_explanation_and_qa
-  const categoryOrder = ['frontend', 'backend', 'database', 'project_explanation_and_qa'];
+  // e.g. 00_must_know_first, frontend, backend, database, project_explanation_and_qa
+  const categoryOrder = ['00_must_know_first', 'frontend', 'backend', 'database', 'project_explanation_and_qa'];
   categoryFolders.sort((a, b) => {
     const idxA = categoryOrder.indexOf(a);
     const idxB = categoryOrder.indexOf(b);

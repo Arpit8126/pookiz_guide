@@ -405,9 +405,50 @@ document.addEventListener('DOMContentLoaded', () => {
     // Post-process HTML to wrap code blocks with header and copy button
     wrapCodeBlocks();
 
+    // Intercept internal markdown links and route dynamically
+    interceptMarkdownLinks();
+
     // Scroll to top of content area
     contentAreaEl.scrollTop = 0;
     updateReadingProgress();
+  }
+
+  function interceptMarkdownLinks() {
+    const links = markdownBodyEl.querySelectorAll('a');
+    links.forEach(link => {
+      const href = link.getAttribute('href');
+      if (!href) return;
+
+      // Check if it's a relative link pointing to a markdown file
+      if (href.endsWith('.md') && !href.startsWith('http') && !href.startsWith('file://')) {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+
+          // Normalize the relative path (remove leading "./" or "../")
+          const cleanPath = href.replace(/^(\.\/|\.\.\/)+/, '');
+          const parts = cleanPath.split('/');
+          
+          if (parts.length >= 2) {
+            const catFolder = parts[parts.length - 2];
+            const file = parts[parts.length - 1];
+            const fileBaseName = file.replace(/\.md$/, '');
+
+            const catId = catFolder;
+            const chId = `${catFolder}-${fileBaseName}`;
+
+            // Check if this chapter exists in our database
+            const category = db.categories.find(c => c.id === catId);
+            const chapter = category ? category.chapters.find(ch => ch.id === chId) : null;
+
+            if (chapter) {
+              selectChapter(catId, chId);
+            } else {
+              console.warn(`Chapter not found in data: ${catId}/${chId}`);
+            }
+          }
+        });
+      }
+    });
   }
 
   function wrapCodeBlocks() {
