@@ -812,7 +812,32 @@ body {
   max-width: 820px;
   margin: 0 auto 40px auto;
   animation: fadeIn var(--transition-normal) ease;
+  transition: max-width var(--transition-normal) ease;
 }
+
+#welcome-dashboard {
+  transition: max-width var(--transition-normal) ease;
+}
+
+/* Dynamic Width Adjustments based on App Container state classes */
+/* 1. Only category sidebar is collapsed */
+#app-container.category-collapsed:not(.chapters-collapsed) #markdown-viewer,
+#app-container.category-collapsed:not(.chapters-collapsed) #welcome-dashboard {
+  max-width: 1050px;
+}
+
+/* 2. Only chapters sidebar is collapsed */
+#app-container.chapters-collapsed:not(.category-collapsed) #markdown-viewer,
+#app-container.chapters-collapsed:not(.category-collapsed) #welcome-dashboard {
+  max-width: 1100px;
+}
+
+/* 3. Both sidebars are collapsed */
+#app-container.category-collapsed.chapters-collapsed #markdown-viewer,
+#app-container.category-collapsed.chapters-collapsed #welcome-dashboard {
+  max-width: 1400px;
+}
+
 
 .content-header {
   display: flex;

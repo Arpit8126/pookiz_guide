@@ -183,12 +183,20 @@ document.addEventListener('DOMContentLoaded', () => {
     state.collapsedSidebars[type] = isCollapsed;
     localStorage.setItem(`pookiz-collapse-${type}`, isCollapsed);
 
+    const appContainerEl = document.getElementById('app-container');
+
     if (isCollapsed) {
       sidebarEl.classList.add('collapsed');
       restoreBtnEl.style.display = 'flex';
+      if (appContainerEl) {
+        appContainerEl.classList.add(`${type}-collapsed`);
+      }
     } else {
       sidebarEl.classList.remove('collapsed');
       restoreBtnEl.style.display = 'none';
+      if (appContainerEl) {
+        appContainerEl.classList.remove(`${type}-collapsed`);
+      }
     }
 
     // Refresh icon state on button
