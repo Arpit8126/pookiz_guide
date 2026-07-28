@@ -162,6 +162,16 @@ document.addEventListener('DOMContentLoaded', () => {
     state.theme = theme;
     htmlEl.setAttribute('data-theme', theme);
     localStorage.setItem('pookiz-theme', theme);
+
+    // Dynamic Prism Theme Toggle
+    const prismThemeEl = document.getElementById('prism-theme');
+    if (prismThemeEl) {
+      if (theme === 'dark') {
+        prismThemeEl.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css');
+      } else {
+        prismThemeEl.setAttribute('href', 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css');
+      }
+    }
   }
 
   function setTextSize(size) {
