@@ -725,7 +725,7 @@ document.addEventListener('DOMContentLoaded', () => {
       updateReadingProgress();
 
       // Scroll to top button visibility
-      if (contentAreaEl.scrollTop > 300) {
+      if (contentAreaEl.scrollTop > 200) {
         scrollToTopBtn.classList.add('visible');
       } else {
         scrollToTopBtn.classList.remove('visible');
@@ -733,10 +733,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     scrollToTopBtn.addEventListener('click', () => {
-      contentAreaEl.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
+      contentAreaEl.scrollTop = 0;
     });
 
     // Route on back/forward browser navigation

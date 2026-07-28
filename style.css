@@ -373,9 +373,11 @@ body {
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--border-color);
-  transition: width var(--transition-normal), min-width var(--transition-normal), opacity var(--transition-normal), padding var(--transition-normal);
+  transition: width 0.18s ease, opacity 0.18s ease;
   flex-shrink: 0;
   position: relative;
+  will-change: width;
+  overflow: hidden;
 }
 
 #category-sidebar {
@@ -1132,11 +1134,13 @@ body {
   box-shadow: var(--shadow-md);
   z-index: 100;
   opacity: 0;
-  transition: bottom var(--transition-normal), opacity var(--transition-normal), background-color var(--transition-fast);
+  pointer-events: none;
+  transition: bottom 0.2s ease, opacity 0.2s ease, background-color var(--transition-fast);
 }
 .scroll-btn.visible {
   bottom: 30px;
   opacity: 1;
+  pointer-events: auto;
 }
 
 /* -------------------------------------------------------------
