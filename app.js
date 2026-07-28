@@ -490,10 +490,12 @@ document.addEventListener('DOMContentLoaded', () => {
       header.className = 'code-block-header';
       header.innerHTML = `
         <span>${lang}</span>
-        <button class="copy-code-btn" title="Copy code snippet">
-          <i data-lucide="copy"></i>
-          <span>Copy</span>
-        </button>
+        <div class="code-header-actions">
+          <button class="copy-code-btn" title="Copy code snippet">
+            <i data-lucide="copy"></i>
+            <span>Copy</span>
+          </button>
+        </div>
       `;
 
       // Structure elements in DOM
@@ -501,8 +503,151 @@ document.addEventListener('DOMContentLoaded', () => {
       wrapper.appendChild(header);
       wrapper.appendChild(pre);
 
-      // Event listener on copy button
+      const actionsDiv = header.querySelector('.code-header-actions');
       const copyBtn = header.querySelector('.copy-code-btn');
+
+      // If language is HTML or SVG, add preview button and container
+      if (lang === 'HTML' || lang === 'SVG') {
+        const previewBtn = document.createElement('button');
+        previewBtn.className = 'preview-code-btn';
+        previewBtn.innerHTML = `
+          <i data-lucide="eye"></i>
+          <span>Show Output</span>
+        `;
+        actionsDiv.insertBefore(previewBtn, copyBtn);
+
+        const previewContainer = document.createElement('div');
+        previewContainer.className = 'code-block-preview';
+        previewContainer.style.display = 'none';
+        wrapper.appendChild(previewContainer);
+
+        previewBtn.addEventListener('click', () => {
+          const isShowing = previewContainer.style.display !== 'none';
+          if (isShowing) {
+            previewContainer.style.display = 'none';
+            wrapper.classList.remove('preview-open');
+            previewBtn.classList.remove('preview-active');
+            previewBtn.innerHTML = `
+              <i data-lucide="eye"></i>
+              <span>Show Output</span>
+            `;
+          } else {
+            previewContainer.style.display = 'block';
+            wrapper.classList.add('preview-open');
+            previewBtn.classList.add('preview-active');
+            previewBtn.innerHTML = `
+              <i data-lucide="eye-off"></i>
+              <span>Hide Output</span>
+            `;
+
+            // Load iframe
+            const htmlCode = code ? code.innerText : pre.innerText;
+            previewContainer.innerHTML = '';
+            
+            const iframe = document.createElement('iframe');
+            iframe.className = 'preview-iframe';
+            previewContainer.appendChild(iframe);
+
+            const doc = iframe.contentDocument || iframe.contentWindow.document;
+            const previewTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const textColor = previewTheme === 'dark' ? '#f3f0f1' : '#1f1d3d';
+            const bgColor = previewTheme === 'dark' ? '#1b1b1c' : '#ffffff';
+            const borderColor = previewTheme === 'dark' ? '#2f2f33' : '#eae7e8';
+
+            const baseStyle = `
+              <style>
+                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+                body {
+                  font-family: 'Inter', sans-serif;
+                  margin: 16px;
+                  padding: 0;
+                  background-color: ${bgColor};
+                  color: ${textColor};
+                  font-size: 14px;
+                }
+                table {
+                  width: 100%;
+                  border-collapse: collapse;
+                  margin: 10px 0;
+                }
+                th, td {
+                  border: 1px solid ${borderColor};
+                  padding: 10px 12px;
+                  text-align: left;
+                }
+                th {
+                  background-color: ${previewTheme === 'dark' ? '#242426' : '#f8f9fa'};
+                  font-weight: 600;
+                }
+                input, select, textarea {
+                  font-family: inherit;
+                  font-size: inherit;
+                  margin-top: 4px;
+                  margin-bottom: 8px;
+                  padding: 8px 12px;
+                  border-radius: 6px;
+                  border: 1px solid ${borderColor};
+                  background-color: ${previewTheme === 'dark' ? '#242426' : '#ffffff'};
+                  color: inherit;
+                  outline: none;
+                }
+                button {
+                  font-family: inherit;
+                  font-size: inherit;
+                  margin-top: 4px;
+                  margin-bottom: 8px;
+                  padding: 8px 12px;
+                  border-radius: 6px;
+                  background-color: #5c6ac4;
+                  color: white;
+                  border: none;
+                  cursor: pointer;
+                  font-weight: 500;
+                  transition: background-color 0.2s;
+                }
+                button:hover {
+                  background-color: #4752c4;
+                }
+              </style>
+            `;
+
+            doc.open();
+            doc.write(`
+              <!DOCTYPE html>
+              <html>
+                <head>
+                  <meta charset="utf-8">
+                  ${baseStyle}
+                </head>
+                <body>
+                  ${htmlCode}
+                </body>
+              </html>
+            `);
+            doc.close();
+
+            iframe.onload = () => {
+              setTimeout(() => {
+                const body = doc.body;
+                const html = doc.documentElement;
+                const height = Math.max(
+                  body.scrollHeight,
+                  body.offsetHeight,
+                  html.clientHeight,
+                  html.scrollHeight,
+                  html.offsetHeight
+                );
+                iframe.style.height = `${height + 20}px`;
+              }, 100);
+            };
+          }
+
+          lucide.createIcons({
+            attrs: { 'data-lucide': true },
+            nameAttr: 'data-lucide'
+          });
+        });
+      }
       copyBtn.addEventListener('click', () => {
         const textToCopy = code ? code.innerText : pre.innerText;
         navigator.clipboard.writeText(textToCopy).then(() => {

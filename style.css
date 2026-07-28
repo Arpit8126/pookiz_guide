@@ -631,38 +631,28 @@ body {
   background-color: var(--bg-content);
 }
 
-/* Restore Sidebars Floating Bar */
-#restore-panels-bar {
-  position: absolute;
-  left: 20px;
-  top: 20px;
-  display: flex;
-  gap: 10px;
-  z-index: 80;
-}
-.restore-btn {
-  background-color: var(--bg-card);
+/* Header Restore Sidebars Buttons */
+.header-restore-btn {
+  background-color: var(--bg-input);
   border: 1px solid var(--border-color);
-  color: var(--text-secondary);
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-md);
-  display: flex;
+  color: var(--text-primary);
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  display: none; /* Controlled by display inline style in JS */
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: var(--shadow-md);
   transition: all var(--transition-fast);
 }
-.restore-btn:hover {
-  color: var(--primary);
+.header-restore-btn:hover {
   border-color: var(--primary);
   background-color: var(--bg-active);
-  transform: translateY(-2px);
+  color: var(--primary-hover);
 }
-.restore-btn i {
-  width: 20px;
-  height: 20px;
+.header-restore-btn i {
+  width: 18px;
+  height: 18px;
 }
 
 .content-container {
@@ -853,18 +843,6 @@ body {
   gap: 8px;
   font-size: 13px;
   font-weight: 500;
-  transition: margin-left var(--transition-normal) ease;
-}
-
-/* Shift breadcrumbs to prevent overlap with floating restore buttons */
-#app-container.category-collapsed:not(.chapters-collapsed) .breadcrumbs {
-  margin-left: 54px;
-}
-#app-container.chapters-collapsed:not(.category-collapsed) .breadcrumbs {
-  margin-left: 54px;
-}
-#app-container.category-collapsed.chapters-collapsed .breadcrumbs {
-  margin-left: 108px;
 }
 #breadcrumb-category {
   color: var(--primary);
@@ -1532,4 +1510,64 @@ body.resizing {
   user-select: none !important;
   -webkit-user-select: none !important;
   cursor: col-resize !important;
+}
+
+/* Code Block Preview Area */
+.code-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.code-block-preview {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-top: none;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  padding: 16px;
+  animation: fadeIn var(--transition-fast) ease;
+  overflow: hidden;
+}
+
+/* Adjust pre border if preview is open */
+.code-block-wrapper.preview-open pre {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: 1px dashed var(--border-color);
+}
+
+.preview-iframe {
+  width: 100%;
+  height: 200px; /* Default height before auto-resize */
+  border: none;
+  background-color: transparent;
+  display: block;
+}
+
+.preview-code-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all var(--transition-fast);
+}
+.preview-code-btn:hover {
+  background-color: var(--bg-active);
+  color: var(--text-primary);
+}
+.preview-code-btn.preview-active {
+  color: #22c55e; /* Green color for active preview */
+}
+.preview-code-btn i {
+  width: 14px;
+  height: 14px;
 }
