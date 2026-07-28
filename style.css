@@ -853,6 +853,18 @@ body {
   gap: 8px;
   font-size: 13px;
   font-weight: 500;
+  transition: margin-left var(--transition-normal) ease;
+}
+
+/* Shift breadcrumbs to prevent overlap with floating restore buttons */
+#app-container.category-collapsed:not(.chapters-collapsed) .breadcrumbs {
+  margin-left: 54px;
+}
+#app-container.chapters-collapsed:not(.category-collapsed) .breadcrumbs {
+  margin-left: 54px;
+}
+#app-container.category-collapsed.chapters-collapsed .breadcrumbs {
+  margin-left: 108px;
 }
 #breadcrumb-category {
   color: var(--primary);
