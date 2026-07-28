@@ -42,9 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const restoreChaptersBtn = document.getElementById('restore-chapters-btn');
   
   const themeToggleBtn = document.getElementById('theme-toggle');
-  const sizeDecBtn = document.getElementById('size-dec-btn');
-  const sizeIncBtn = document.getElementById('size-inc-btn');
-  const currentSizeLabel = document.getElementById('current-size-label');
   
   const chapterSearchInput = document.getElementById('chapter-search');
   const globalSearchInput = document.getElementById('global-search');
@@ -176,7 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function setTextSize(size) {
     state.textSize = Math.min(Math.max(size, 80), 160); // 80% to 160%
-    currentSizeLabel.textContent = `${state.textSize}%`;
     markdownBodyEl.style.setProperty('--body-font-size', `${state.textSize / 100}rem`);
     localStorage.setItem('pookiz-text-size', state.textSize);
   }
@@ -697,9 +693,7 @@ document.addEventListener('DOMContentLoaded', () => {
       setTheme(nextTheme);
     });
 
-    // Font Sizing
-    sizeDecBtn.addEventListener('click', () => setTextSize(state.textSize - 10));
-    sizeIncBtn.addEventListener('click', () => setTextSize(state.textSize + 10));
+
 
     // Desktop Collapse Category
     toggleCategoryBtn.addEventListener('click', () => {
